@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "photos-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/photos/PhotosWebPart.js",
+          "manifest": "./src/webparts/photos/PhotosWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "PhotosWebPartStrings": "lib/webparts/photos/loc/{locale}.js"
+  }
+}

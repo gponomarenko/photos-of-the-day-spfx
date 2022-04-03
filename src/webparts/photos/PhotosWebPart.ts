@@ -1,10 +1,13 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
+
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
-  PropertyPaneDropdown
+  PropertyPaneSlider,
+  PropertyPaneButton,
+  PropertyPaneButtonType
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
@@ -13,7 +16,7 @@ import Photos from './components/Photos';
 import { IPhotosProps } from './components/IPhotosProps';
 
 interface IPhotosUrlsJSON {
-  urls?: string[];
+  urls: string[];
 }
 
 export interface IPhotosWebPartProps {
@@ -21,35 +24,38 @@ export interface IPhotosWebPartProps {
   description: string;
   numberPerView: number;
   photosUrls: string;
+  photoUrl: string;
 }
 
 export default class PhotosWebPart extends BaseClientSideWebPart<IPhotosWebPartProps> {
-
   public render(): void {
     const element: React.ReactElement<IPhotosProps> = React.createElement(
       Photos,
       {
         description: this.properties.description,
         context: this.context,
-        photosUrlsArray: this.getArrayOfUrls() || null,
-        itemsNumber: this.getUrlsNumber() || null,
-        numberPerViewValue: this.properties.numberPerView,
-        buttonsPerView: this.getButtonsPerView() || null,
+        inputUrl: this.properties.photoUrl,
+        itemsPerView: this.properties.numberPerView,
+        getButtonsNumber: this.getButtonsNumberPerView(),
+        addUrl: this.buttonAddUrl(),
       }
     );
 
     ReactDom.render(element, this.domElement);
   }
-  private getArrayOfUrls(): string[] {
-    if (this.properties.photosUrls && this.properties.photosUrls != undefined) return JSON.parse(this.properties.photosUrls)?.urls;
+
+  protected get disableReactivePropertyChanges(): boolean {
+    return true;
   }
 
-  private getUrlsNumber(): number {
-    if (this.properties.photosUrls && this.properties.photosUrls != undefined) return JSON.parse(this.properties.photosUrls)?.urls.length;
+  private getButtonsNumberPerView(itemsNumber?: number, itemsPerView?: number): number {
+    return Math.ceil(itemsNumber / itemsPerView);
   }
 
-  private getButtonsPerView(): number {
-    if (this.properties.photosUrls && this.properties.photosUrls != undefined) return Math.ceil(JSON.parse(this.properties.photosUrls)?.urls.length/this.properties.numberPerView);
+  private buttonAddUrl(oldVal?: any): string {
+    // console.log("buttonAddUrl was triggered");
+
+    return this.properties.photoUrl;
   }
 
   protected onDispose(): void {
@@ -74,16 +80,12 @@ export default class PhotosWebPart extends BaseClientSideWebPart<IPhotosWebPartP
                 PropertyPaneTextField('description', {
                   label: "Title"
                 }),
-                PropertyPaneDropdown('numberPerView',{
+                PropertyPaneSlider('numberPerView',{
                   label:"Number of photos per view",
-                  options:
-                  [
-                    {key:1,text:"1 photo"},
-                    {key:2,text:"2 photos"},
-                    {key:3,text:"3 photos"},
-                    {key:4,text:"4 photos"}
-                  ]
-                  })
+                  min: 1,
+                  max: 4,
+                  step: 1
+                })
               ]
             },
             {
@@ -92,6 +94,15 @@ export default class PhotosWebPart extends BaseClientSideWebPart<IPhotosWebPartP
               [
                 PropertyPaneTextField('photosUrls', {
                   label:"URLs of photos"
+                }),
+                PropertyPaneTextField('photoUrl', {
+                  label:"Url of photo"
+                }),
+                PropertyPaneButton('addUrl', {
+                  text: "addUrl",
+                  buttonType: PropertyPaneButtonType.Normal,
+                  icon: 'Add',
+                  onClick: this.buttonAddUrl.bind(this)
                 })
               ]
             }
@@ -101,7 +112,3 @@ export default class PhotosWebPart extends BaseClientSideWebPart<IPhotosWebPartP
     };
   }
 }
-function photosUrls(photosUrls: any): IPhotosUrlsJSON {
-  throw new Error('Function not implemented.');
-}
-

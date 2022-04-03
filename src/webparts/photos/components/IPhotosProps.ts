@@ -3,8 +3,8 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 export interface IPhotosProps {
   description: string;
   context: WebPartContext;
-  photosUrlsArray: string[];
-  itemsNumber: number;
-  numberPerViewValue: number;
-  buttonsPerView: number;
+  inputUrl: string;
+  itemsPerView: number;
+  getButtonsNumber: number;
+  addUrl: string;
 }

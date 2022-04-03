@@ -1,0 +1,13 @@
+div.slick-track {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f2f;
+  gap: 10px;
+}
+
+div.slick-slide {
+  width: 100%;
+  background-color: #f00;
+}

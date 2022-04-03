@@ -76,15 +76,15 @@ $themeWhite: '[theme:white, default:white]';
   }
 }
 
-.src {
-  margin: auto;
-}
-
-.photos__box {
+.container2 {
   padding: 40px;
+  background: #419be0;
 }
 
-.slick-slide .img {
-  width: 100px;
-  height: 100px;
+.imageFrame>img {
+  width: 100%;
+}
+
+.imageFrame {
+  padding: 10px 0;
 }

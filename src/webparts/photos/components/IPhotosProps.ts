@@ -5,6 +5,4 @@ export interface IPhotosProps {
   context: WebPartContext;
   inputUrl: string;
   itemsPerView: number;
-  getButtonsNumber: number;
-  addUrl: string;
 }

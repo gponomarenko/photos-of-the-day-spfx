@@ -3,7 +3,7 @@
   "solution": {
     "name": "photos-day-client-side-solution",
     "id": "9eacf8af-b674-46f4-9f1b-901fd1d9df79",
-    "version": "1.0.0.0",
+    "version": "1.0.0.7",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "developer": {
